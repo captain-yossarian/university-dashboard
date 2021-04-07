@@ -1,8 +1,10 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
 
 function App() {
+  fetch("http://localhost:3001/collect");
+  // /https://github.com/mui-org/material-ui/tree/master/docs/src/pages/getting-started/templates/dashboard
   return (
     <div className="App">
       <header className="App-header">
