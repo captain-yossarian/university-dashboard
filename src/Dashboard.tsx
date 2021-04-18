@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -119,7 +119,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = useState(true);
+  const [distinctIps, setDistinctIps] = useState([]);
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -127,6 +129,12 @@ export default function Dashboard() {
     setOpen(false);
   };
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
+  useEffect(() => {
+    fetch("https://api.catchts.com/metrics/distinct_per_day").then((response) =>
+      response.json().then(setDistinctIps)
+    );
+  }, []);
 
   return (
     <div className={classes.root}>
@@ -182,13 +190,13 @@ export default function Dashboard() {
         <List>{secondaryListItems}</List>
       </Drawer>
       <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
+        <div className={classes.appBarSpacer} />(
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
             {/* Chart */}
             <Grid item xs={12} md={8} lg={9}>
               <Paper className={fixedHeightPaper}>
-                <Chart />
+                <Chart data={distinctIps} />
               </Paper>
             </Grid>
             {/* Recent Deposits */}
